@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,13 +52,12 @@ public class AccountController {
             return view;
         }
 
-        if (!account.getEmailCheckToken().equals(token)){
+        if (!account.isValidToken(token)){
             model.addAttribute("error", "wrong.token");
             return view;
         }
 
-        account.setEmailVerified(true);
-        account.setJoinedAt(LocalDateTime.now());
+        account.completeSignUp();
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;

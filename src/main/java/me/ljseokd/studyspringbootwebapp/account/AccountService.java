@@ -29,7 +29,7 @@ public class AccountService {
         sendSignUpConfirmEmail(newAccount);
     }
 
-    private Account saveNewAccount(@ModelAttribute @Valid SignUpForm signUpForm) {
+    private Account saveNewAccount(SignUpForm signUpForm) {
         Account account = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
@@ -54,4 +55,7 @@ public class Account {
 
     private boolean studyUpdatedByWeb;
 
+    public void generateEmailCheckToken() {
+        emailCheckToken = UUID.randomUUID().toString();
+    }
 }

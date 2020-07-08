@@ -2,8 +2,6 @@ package me.ljseokd.studyspringbootwebapp.account;
 
 import lombok.RequiredArgsConstructor;
 import me.ljseokd.studyspringbootwebapp.domain.Account;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -11,9 +9,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/sign-up")
 @RequiredArgsConstructor
 public class AccountController {
 
@@ -21,29 +19,48 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    private final AccountRepository accountRepository;
+
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(signUpFormValidator);
     }
 
-    @GetMapping
+    @GetMapping("/sign-up")
     public String signUp(Model model ){
-
         model.addAttribute(new SignUpForm());
         return "account/sign-up";
     }
 
-    @PostMapping
+    @PostMapping("/sign-up")
     public String signUpSubmit(@Valid @ModelAttribute SignUpForm signUpForm, Errors errors){
         if (errors.hasErrors()){
             return "account/sign-up";
         }
         accountService.processNewAccount(signUpForm);
-
         return "redirect:/";
-
     }
 
+    @GetMapping("/check-email-token")
+    public String checkEmailToken(String token, String email, Model model){
+        Account account = accountRepository.findByEmail(email);
+        String view = "account/checked-email";
+        if (account == null){
+            model.addAttribute("error", "wrong.email");
+            return view;
+        }
+
+        if (!account.getEmailCheckToken().equals(token)){
+            model.addAttribute("error", "wrong.token");
+            return view;
+        }
+
+        account.setEmailVerified(true);
+        account.setJoinedAt(LocalDateTime.now());
+        model.addAttribute("numberOfUser", accountRepository.count());
+        model.addAttribute("nickname", account.getNickname());
+        return view;
+    }
 
 
 }

@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css"/>
         <script src="/node_modules/jquery/dist/jquery.min.js"></script>
         <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="node_modules/jdenticon/dist/jdenticon.min.js"></script>
+        <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
         <style>
             .container{
                 max-width: 100%;
@@ -63,7 +63,7 @@
                         <h6 class="dropdown-header">
                             <span sec:authentication="name">Username</span>
                         </h6>
-                        <a class="dropdown-item" th:href="@{'/prifile' + ${#authentication.name}}">프로필</a>
+                        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
                         <a class="dropdown-item" href="#">스터디</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdwon-item" th:href="@{'/settings/prifile'}">설정</a>

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,7 +98,6 @@ class AccountControllerTest {
     }
 
 
-
     @DisplayName("회원 가입 처리 - 입력값 정상")
     @Test
     void signUpSubmit_with_correct_input() throws Exception {
@@ -119,5 +119,29 @@ class AccountControllerTest {
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
     }
 
+
+    @DisplayName("이메일 다시보내기")
+    @Test
+    @WithMockUser
+    void re_send_email() throws Exception {
+
+        // Given
+        Account account = Account.builder()
+                .email("ljseokd@gmail.com")
+                .password("12345678")
+                .nickname("ljseokd")
+                .build();
+        Account newAccount = accountRepository.save(account);
+
+        // When
+        mockMvc.perform(get("/resend-email")
+                .param("name", newAccount.getNickname()))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"))
+            .andExpect(authenticated());
+
+        // Then
+        then(javaMailSender).should().send(any(SimpleMailMessage.class));
+    }
 
 }

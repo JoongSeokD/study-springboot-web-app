@@ -1,9 +1,11 @@
 package me.ljseokd.studyspringbootwebapp.settings;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import me.ljseokd.studyspringbootwebapp.domain.Account;
 
 @Data
+@NoArgsConstructor
 public class Profile {
 
     private String bio;

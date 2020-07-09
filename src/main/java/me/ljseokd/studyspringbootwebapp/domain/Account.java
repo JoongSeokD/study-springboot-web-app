@@ -55,6 +55,8 @@ public class Account {
 
     private boolean studyUpdatedByWeb;
 
+    private LocalDateTime emailCheckTokenGeneratedAt;
+
     public void generateEmailCheckToken() {
         emailCheckToken = UUID.randomUUID().toString();
     }
@@ -66,5 +68,9 @@ public class Account {
 
     public boolean isValidToken(String token) {
         return emailCheckToken.equals(token);
+    }
+
+    public boolean canSendConfirmEmail() {
+        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
     }
 }

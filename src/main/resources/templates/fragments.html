@@ -52,12 +52,16 @@
                 </li>
                 <li class="nav-item-dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">프로필
-                            <svg
+                       aria-haspopup="true" aria-expanded="false">
+
+                        <svg    th:if="${#strings.isEmpty(account?.profileImage)}"
                                  data-jdenticon-value="user127"
                                  th:data-jdenticon-value="${#authentication.name}"
                                  width="24" height="24"
                                  class="rounded border bg-light"></svg>
+                        <img th:if="${!#strings.isEmpty(account?.profileImage)}"
+                             th:src="${account.profileImage}" width="24" height="24" class="rounded border"/>
+
                     </a>
                     <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
                         <h6 class="dropdown-header">
@@ -84,7 +88,7 @@
             <img class="mb-2" src="/images/logo.png" alt="" width="100">
         </div>
     </footer>
-
+    settings-menu(currentMenu='profile')
     <div th:fragment="study-settings-menu (currentMenu)" class="list-group">
         <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'description'}? active"
            href="#" th:href="@{/settings/description}">소개</a>

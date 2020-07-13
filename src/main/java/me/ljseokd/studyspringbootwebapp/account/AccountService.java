@@ -2,6 +2,7 @@ package me.ljseokd.studyspringbootwebapp.account;
 
 import lombok.RequiredArgsConstructor;
 import me.ljseokd.studyspringbootwebapp.domain.Account;
+import me.ljseokd.studyspringbootwebapp.domain.Tag;
 import me.ljseokd.studyspringbootwebapp.settings.Notifications;
 import me.ljseokd.studyspringbootwebapp.settings.Profile;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -125,5 +128,15 @@ public class AccountService implements UserDetailsService {
         mailMessage.setSubject("로그인 링크");
         mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() + "&email=" + account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().add(tag));
+    }
+
+    public Set<Tag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getTags();
     }
 }

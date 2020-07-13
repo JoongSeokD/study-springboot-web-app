@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-2">
-            <div th:replace="fragments.html :: study-settings-menu(currentMenu='tags')"></div>
+            <div th:replace="fragments.html :: study-settings-menu(currentMenu='zones')"></div>
         </div>
         <div class="col-8">
             <div class="row">
@@ -20,8 +20,8 @@
                         태그를 입력하고 콤마(,)또는 엔터를 입력하세요
                     </div>
                     <div id="whitelist" th:text="${whiteList}" hidden></div>
-                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
-                           class="tagify-outside" aria-describedby="tagHelp">
+                    <input id="zones" type="text" name="zones" th:value="${#strings.listJoin(zones, ',')}"
+                           class="tagify-outside" aria-describedby="zoneHelp">
                 </div>
             </div>
         </div>
@@ -29,9 +29,10 @@
 </div>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
 <script th:replace="fragments.html :: ajax-csrf-header"></script>
+
 <script type="application/javascript">
     $(function (){
-        function tagRequest(url, tagTitle){
+        function tagRequest(url, zoneName){
             $.ajax({
                dataType: "json",
                autocomplete: {
@@ -40,8 +41,8 @@
                },
                 contentType: "application/json; charset=utf-8",
                 method: "POST",
-                url: "/settings/tags" + url,
-                data: JSON.stringify({'tagTitle': tagTitle})
+                url: "/settings/zones" + url,
+                data: JSON.stringify({'zoneName': zoneName})
             }).done(function (data, status){
                 console.log("${data} and status is ${status}")
             });
@@ -53,14 +54,14 @@
         function onRemove(e){
             tagRequest("/remove", e.detail.value.data.value);
         }
-        var tagInput = document.querySelector("#tags");
+        var zoneInput = document.querySelector("#zones");
 
-        var tagify = new Tagify(tagInput, {
+        var tagify = new Tagify(zoneInput, {
             pattern: /^.{0,20}$/,
             whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
             dropdown: {
                 enabled: 1,
-            }
+            },
         });
         tagify.on("add", onAdd);
         tagify.on("remove", onRemove);

@@ -3,6 +3,7 @@ package me.ljseokd.studyspringbootwebapp.account;
 import lombok.RequiredArgsConstructor;
 import me.ljseokd.studyspringbootwebapp.domain.Account;
 import me.ljseokd.studyspringbootwebapp.domain.Tag;
+import me.ljseokd.studyspringbootwebapp.domain.Zone;
 import me.ljseokd.studyspringbootwebapp.settings.Notifications;
 import me.ljseokd.studyspringbootwebapp.settings.Profile;
 import org.modelmapper.ModelMapper;
@@ -138,5 +139,21 @@ public class AccountService implements UserDetailsService {
     public void removeTag(Account account, Tag tag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().remove(tag));
+    }
+
+    public Set<Zone> getZones(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getZones();
+
+    }
+
+    public void addZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().add(zone));
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().remove(zone));
     }
 }

@@ -1,11 +1,8 @@
 package me.ljseokd.studyspringbootwebapp.settings;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import me.ljseokd.studyspringbootwebapp.domain.Account;
 
 @Data
-@NoArgsConstructor
 public class Notifications {
 
     private boolean studyCreatedByEmail;
@@ -20,12 +17,4 @@ public class Notifications {
 
     private boolean studyUpdatedByWeb;
 
-    public Notifications(Account account) {
-        studyCreatedByEmail = account.isStudyCreatedByEmail();
-        studyCreatedByWeb = account.isStudyCreatedByWeb();
-        studyEnrollmentResultByEmail = account.isStudyEnrollmentResultByEmail();
-        studyEnrollmentResultByWeb = account.isStudyEnrollmentResultByWeb();
-        studyUpdatedByEmail = account.isStudyUpdatedByEmail();
-        studyUpdatedByWeb = account.isStudyUpdatedByWeb();
-    }
 }

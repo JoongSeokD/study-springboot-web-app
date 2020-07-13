@@ -122,7 +122,61 @@ class SettingsControllerTest {
                 .andExpect(model().attributeExists("account"));
 
         Account ljseokd = accountRepository.findByNickname("ljseokd");
-        assertNull(ljseokd.getBio());
+    }
+
+    @WithAccount("ljseokd")
+    @DisplayName("알림 수정 폼")
+    @Test
+    void updateNotificationsForm() throws Exception {
+        mockMvc.perform(get(SettingsController.SETTINGS_NOTIFICATIONS_URL))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("notifications"));
+    }
+
+    @WithAccount("ljseokd")
+    @DisplayName("알림 수정 하기 - 입력값 정상")
+    @Test
+    void updateNotifications() throws Exception {
+        mockMvc.perform(post(SettingsController.SETTINGS_NOTIFICATIONS_URL)
+                .param("studyCreatedByEmail", "true")
+                .param("studyCreatedByWeb", "true")
+                .param("studyEnrollmentResultByEmail", "true")
+                .param("studyEnrollmentResultByWeb", "true")
+                .param("studyUpdatedByEmail", "true")
+                .param("studyUpdatedByWeb", "true")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(SettingsController.SETTINGS_NOTIFICATIONS_URL))
+                .andExpect(flash().attributeExists("message"));
+
+        Account ljseokd = accountRepository.findByNickname("ljseokd");
+        assertTrue(ljseokd.isStudyCreatedByEmail());
+        assertTrue(ljseokd.isStudyCreatedByWeb());
+        assertTrue(ljseokd.isStudyUpdatedByEmail());
+        assertTrue(ljseokd.isStudyUpdatedByWeb());
+        assertTrue(ljseokd.isStudyEnrollmentResultByEmail());
+        assertTrue(ljseokd.isStudyEnrollmentResultByWeb());
+    }
+
+    @WithAccount("ljseokd")
+    @DisplayName("알림 수정 하기 - 입력값 에러")
+    @Test
+    void updateNotifications_error() throws Exception {
+        mockMvc.perform(post(SettingsController.SETTINGS_NOTIFICATIONS_URL)
+                .param("studyCreatedByEmail", "true")
+                .param("studyCreatedByWeb", "true")
+                .param("studyEnrollmentResultByEmail", "true")
+                .param("studyEnrollmentResultByWeb", "true")
+                .param("studyUpdatedByEmail", "true")
+                .param("studyUpdatedByWeb", "true123")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name(SettingsController.SETTINGS_NOTIFICATIONS_VIEW_NAME))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeExists("notifications"))
+                .andExpect(model().attributeExists("account"));
+
     }
 
 

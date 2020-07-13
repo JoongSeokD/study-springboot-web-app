@@ -94,10 +94,10 @@
            href="#" th:href="@{/settings/profile}">프로필</a>
         <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active"
            href="#" th:href="@{/settings/password}">패스워드</a>
-        <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'alam'}? active"
-           href="#" th:href="@{/settings/alam}">알림</a>
-        <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'favorite'}? active"
-           href="#" th:href="@{/settings/favorite}">관심 주제</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notifications'}? active"
+           href="#" th:href="@{/settings/notifications}">알림</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'keywords'}? active"
+           href="#" th:href="@{/settings/keywords}">관심 주제</a>
         <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'location'}? active"
            href="#" th:href="@{/settings/location}">활동 지역</a>
         <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active"

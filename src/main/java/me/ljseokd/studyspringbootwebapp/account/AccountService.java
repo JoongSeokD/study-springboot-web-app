@@ -2,6 +2,7 @@ package me.ljseokd.studyspringbootwebapp.account;
 
 import lombok.RequiredArgsConstructor;
 import me.ljseokd.studyspringbootwebapp.domain.Account;
+import me.ljseokd.studyspringbootwebapp.settings.Notifications;
 import me.ljseokd.studyspringbootwebapp.settings.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -102,8 +103,18 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
     }
 
-    public void updatePassowrd(Account account, String newPassword) {
+    public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
+        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
+        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
+        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
+        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
+        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
         accountRepository.save(account);
     }
 }

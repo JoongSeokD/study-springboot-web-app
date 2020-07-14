@@ -1,6 +1,8 @@
 package me.ljseokd.studyspringbootwebapp.account;
 
 import me.ljseokd.studyspringbootwebapp.domain.Account;
+import me.ljseokd.studyspringbootwebapp.mail.EmailMessage;
+import me.ljseokd.studyspringbootwebapp.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ class AccountControllerTest {
     @Autowired AccountRepository accountRepository;
 
     @MockBean
-    JavaMailSender javaMailSender;
+    EmailService emailService;
 
     @DisplayName("인증 메일 확인 - 입력값 오류")
     @Test
@@ -116,7 +118,7 @@ class AccountControllerTest {
         assertNotNull(account);
         assertNotEquals(account.getPassword(), "12345678");
         assertTrue(accountRepository.existsByEmail("ljseokd@gmail.com"));
-        then(javaMailSender).should().send(any(SimpleMailMessage.class));
+        then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
 }

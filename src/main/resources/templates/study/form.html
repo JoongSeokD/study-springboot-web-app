@@ -13,7 +13,7 @@
 
         <div class="row justify-content-center">
             <form class="needs-validation col-sm-10" action="#"
-                    th:action="@{/new/study}" th:object="${studyForm}" method="post" novalidate>
+                    th:action="@{/new-study}" th:object="${studyForm}" method="post" novalidate>
                 <div class="form-group">
                     <label for="path">스터디 URL</label>
                     <input id="path" type="text" th:field="*{path}" class="form-control"

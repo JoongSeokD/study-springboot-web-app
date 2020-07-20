@@ -4,6 +4,8 @@ import lombok.*;
 import me.ljseokd.studyspringbootwebapp.account.UserAccount;
 
 import javax.persistence.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,5 +80,10 @@ public class Study {
 
     public boolean isManager(UserAccount userAccount){
         return this.managers.contains(userAccount.getAccount());
+    }
+
+    public String getEncodedPath() {
+        return URLEncoder.encode(path, StandardCharsets.UTF_8);
+
     }
 }
